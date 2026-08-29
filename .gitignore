@@ -22,3 +22,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Skill files
+.agent
+
+
+
+
+

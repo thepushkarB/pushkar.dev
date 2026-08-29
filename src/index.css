@@ -1,77 +1,232 @@
-@import "tailwindcss";
-/* @tailwind base;
-@tailwind components;
-@tailwind utilities; */
+/* DESIGN TOKENS — Techno-Brutalist Terminal */
+:root {
+  /* Background */
+  --bg:        #0a0a0a;
+  --surface:   #111111;
+  --surface-2: #1a1a1a;
+  --surface-3: #222222;
 
-body {
-  @apply bg-black text-pink-500 font-mono;
+  /* Borders */
+  --border:       #2a2a2a;
+  --border-dim:   #1e1e1e;
+  --border-glow:  rgba(0, 255, 159, 0.25);
+
+  /* Accent — Phosphor Green (primary) */
+  --green:        #00ff9f;
+  --green-dim:    rgba(0, 255, 159, 0.15);
+  --green-glow:   rgba(0, 255, 159, 0.4);
+
+  /* Accent — Violet (secondary) */
+  --violet:       #c8b5ff;
+  --violet-dim:   rgba(200, 181, 255, 0.15);
+  --violet-glow:  rgba(200, 181, 255, 0.4);
+
+  /* Accent — Amber (tertiary / sparingly) */
+  --amber:        #ffd060;
+  --amber-dim:    rgba(255, 208, 96, 0.15);
+
+  /* Accent — Cyan */
+  --cyan:         #67e8f9;
+  --cyan-dim:     rgba(103, 232, 249, 0.15);
+
+  /* Text */
+  --text:         #e8e8e8;
+  --text-dim:     #888888;
+  /* --text-dimmer:  #444444; */
+  --text-dimmer:  #5b5a5a;
+  --text-green:   #00ff9f;
+  --text-violet:  #c8b5ff;
+
+  /* Typography */
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+
+  /* Spacing */
+  --section-padding: clamp(4rem, 8vw, 7rem);
+  --container-max: 1200px;
+  --container-pad: clamp(1.25rem, 5vw, 3rem);
+
+  /* Transitions */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --fast: 150ms var(--ease);
+  --med:  300ms var(--ease);
+  --slow: 600ms var(--ease);
 }
 
-/* :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+/* RESET */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
+body {
+  font-family: var(--font-mono);
+  background-color: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
+  overflow-x: hidden;
   min-height: 100vh;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+/* CRT Scanline overlay — whole page */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.035) 2px,
+    rgba(0, 0, 0, 0.035) 4px
+  );
+  pointer-events: none;
+  z-index: 9998;
+}
+
+/* CRT vignette */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.5) 100%);
+  pointer-events: none;
+  z-index: 9997;
+}
+
+img, video { display: block; max-width: 100%; }
+
+a {
+  color: inherit;
+  text-decoration: none;
 }
 
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
   cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  border: none;
+  background: none;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-} */
+ul, ol { list-style: none; }
+
+/* UTILITY CLASSES */
+.container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--container-pad);
+}
+
+/* Section heading */
+.section-tag {
+  font-family: var(--font-mono);
+  font-size: clamp(0.7rem, 1.5vw, 0.8rem);
+  color: var(--text-dimmer);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 0.35rem;
+}
+
+.section-title {
+  font-family: var(--font-mono);
+  font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+  color: var(--green);
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+/* Horizontal rule styled as terminal divider */
+.terminal-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 0.5rem 0;
+}
+
+/* Skill / tech tag */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  padding: 0.2rem 0.55rem;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  color: var(--text-dim);
+  background: var(--surface);
+  letter-spacing: 0.05em;
+  transition: var(--fast);
+  white-space: nowrap;
+}
+
+.tag:hover {
+  border-color: var(--green);
+  color: var(--green);
+}
+
+/* Green glow text */
+.glow-green {
+  color: var(--green);
+  text-shadow: 0 0 20px var(--green-glow);
+}
+
+/* Blinking cursor */
+.cursor::after {
+  content: '█';
+  animation: blink 1s step-end infinite;
+  color: var(--green);
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* Scroll reveal base state */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Focus styles for keyboard nav */
+:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--green); }
+
+/* fadeInUp — used by SudoToast in App.jsx */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0);    }
+}
+
+/* Selection */
+::selection {
+  background: var(--green-dim);
+  color: var(--green);
+}

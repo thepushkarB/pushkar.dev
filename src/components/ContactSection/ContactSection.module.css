@@ -1,0 +1,177 @@
+
+.contactSection {
+  padding: var(--section-padding) 0;
+  position: relative;
+}
+
+/* Section Header */
+.sectionHeader {
+  margin-bottom: 2rem;
+}
+
+.sectionTag {
+  font-family: var(--font-mono);
+  font-size: clamp(0.7rem, 1.5vw, 0.8rem);
+  color: var(--text-dimmer);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 0.35rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sectionTag::before {
+  content: '//';
+  color: var(--green);
+  opacity: 0.7;
+}
+
+.sectionTitle {
+  font-family: var(--font-mono);
+  font-size: clamp(1.2rem, 3vw, 1.75rem);
+  color: var(--green);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* Humor line */
+.humorLine {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--text-dimmer);
+  margin-bottom: 1.25rem;
+  letter-spacing: 0.04em;
+}
+
+.humorLine::before {
+  content: '> ';
+  color: var(--green);
+  opacity: 0.6;
+}
+
+/* Terminal card container */
+.terminalCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  max-width: 620px;
+}
+
+/* Card header bar */
+.cardHeader {
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+  padding: 0.65rem 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.cardHeaderDollar {
+  color: var(--green);
+}
+
+/* Contact row */
+.contactRow {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.9rem 1.25rem;
+  text-decoration: none;
+  color: inherit;
+  border-left: 2px solid transparent;
+  transition: background var(--fast), border-color var(--fast);
+}
+
+.contactRow + .contactRow {
+  border-top: 1px solid var(--border);
+}
+
+.contactRow:hover {
+  background: var(--surface-2);
+  border-left-color: var(--green);
+}
+
+/* > prompt glyph */
+.rowPrompt {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--green);
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+/* [label] key */
+.rowKey {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  min-width: 72px;
+  flex-shrink: 0;
+}
+
+/* Value / display text */
+.rowVal {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text);
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.contactRow:hover .rowVal {
+  color: var(--green);
+}
+
+/* ↗ arrow */
+.rowArrow {
+  font-size: 0.85rem;
+  color: var(--text-dimmer);
+  flex-shrink: 0;
+  transition: color var(--fast), transform var(--fast);
+}
+
+.contactRow:hover .rowArrow {
+  color: var(--green);
+  transform: translate(2px, -2px);
+}
+
+/* Status lines */
+.statusLines {
+  padding: 0.75rem 1.25rem 1rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.statusLine {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-dimmer);
+  letter-spacing: 0.04em;
+}
+
+.statusLine::before {
+  content: '// ';
+  color: var(--green);
+  opacity: 0.5;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .terminalCard {
+    max-width: 100%;
+  }
+
+  .rowVal {
+    font-size: 0.72rem;
+  }
+}

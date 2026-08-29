@@ -1,0 +1,104 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   NOT FOUND PAGE — CSS Module
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: var(--bg);
+}
+
+.content {
+  font-family: var(--font-mono);
+  max-width: 560px;
+  width: 100%;
+}
+
+.errorCode {
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  font-weight: 700;
+  color: var(--green);
+  letter-spacing: -0.03em;
+  text-shadow: 0 0 30px var(--green-glow);
+  margin-bottom: 0.5rem;
+  font-family: var(--font-display);
+}
+
+.errorMsg {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+.terminal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.termLine {
+  display: flex;
+  align-items: center;
+  font-size: 0.82rem;
+  color: var(--text);
+}
+
+.dollar {
+  color: var(--green);
+}
+
+.cmd {
+  color: var(--text);
+}
+
+.lsOutput {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  padding-left: 1rem;
+  font-size: 0.78rem;
+  color: var(--violet);
+}
+
+.dir {
+  color: var(--violet);
+}
+
+.notFound {
+  font-size: 0.75rem;
+  color: var(--text-dimmer);
+  padding-left: 1rem;
+}
+
+.notFoundVal {
+  color: #ff6b6b;
+}
+
+.homeLink {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--green);
+  margin-top: 0.4rem;
+  transition: opacity var(--fast);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(0, 255, 159, 0.3);
+}
+
+.homeLink:hover {
+  opacity: 0.8;
+}

@@ -1,0 +1,144 @@
+/* KEYBOARD MODAL — CSS Module
+   Appears when user presses `?`. Lists all keyboard shortcuts.
+   Backdrop blur + centered panel with ASCII border aesthetic. 
+*/
+
+/* Semi-transparent backdrop — click to close */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  animation: fadeIn 0.15s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Modal panel */
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--border-glow);
+  border-radius: 6px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 0 60px rgba(0, 255, 159, 0.1), 0 24px 64px rgba(0, 0, 0, 0.7);
+  animation: slideIn 0.2s var(--ease);
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-12px); }
+  to   { opacity: 1; transform: translateY(0);     }
+}
+
+/* Modal header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.title {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--green);
+  letter-spacing: 0.1em;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.title::before {
+  content: '//';
+  opacity: 0.6;
+}
+
+/* Close button */
+.closeBtn {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  padding: 0.2rem 0.5rem;
+  cursor: pointer;
+  transition: border-color var(--fast), color var(--fast);
+}
+
+.closeBtn:hover {
+  border-color: var(--green);
+  color: var(--green);
+}
+
+/* Shortcut list */
+.list {
+  padding: 0.75rem 0;
+}
+
+/* Individual shortcut row */
+.row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.45rem 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+
+.row:hover {
+  background: var(--surface-2);
+}
+
+/* Key combo badge */
+.keys {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  min-width: 90px;
+  flex-shrink: 0;
+}
+
+.key {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 0.15rem 0.4rem;
+  color: var(--green);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+}
+
+/* Description */
+.desc {
+  color: var(--text-dim);
+  flex: 1;
+}
+
+/* Divider between groups */
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 0.4rem 1.25rem;
+  opacity: 0.4;
+}
+
+/* Footer hint */
+.footer {
+  padding: 0.75rem 1.25rem;
+  border-top: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text-dimmer);
+  text-align: center;
+  letter-spacing: 0.06em;
+}

@@ -1,0 +1,797 @@
+
+.aboutSection {
+  padding: var(--section-padding) 0;
+  position: relative;
+}
+
+/* Section Header (Terminal Tag + Section Title) */
+.sectionHeader {
+  margin-bottom: 2rem;
+}
+
+.sectionTag {
+  font-family: var(--font-mono);
+  font-size: clamp(0.7rem, 1.5vw, 0.8rem);
+  color: var(--text-dimmer);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 0.35rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sectionTag::before {
+  content: '//';
+  color: var(--green);
+  opacity: 0.7;
+}
+
+.sectionTitle {
+  font-family: var(--font-mono);
+  font-size: clamp(1.2rem, 3vw, 1.75rem);
+  color: var(--green);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Dossier Card Container */
+.dossierCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+  transition: border-color var(--med), box-shadow var(--med);
+}
+
+.dossierCard:hover {
+  border-color: var(--border-glow);
+  box-shadow: 0 0 35px rgba(0, 255, 159, 0.06);
+}
+
+/* Top Header Bar / Classified Window Bar */
+.cardHeader {
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+  padding: 0.65rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.subjectCode {
+  color: var(--text);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.classifiedBadge {
+  color: var(--amber);
+  background: var(--amber-dim);
+  border: 1px solid rgba(255, 208, 96, 0.3);
+  padding: 0.15rem 0.5rem;
+  border-radius: 2px;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  /* text-transform: uppercase; */
+  cursor: help;
+  transition: color var(--fast), background-color var(--fast), border-color var(--fast), box-shadow var(--fast);
+  user-select: none;
+}
+
+/* Mr. Robot fsociety easter egg hover state */
+.classifiedBadge:hover,
+.classifiedBadgeAlert {
+  color: #ff5555;
+  background: rgba(255, 85, 85, 0.15);
+  border-color: rgba(255, 85, 85, 0.5);
+  box-shadow: 0 0 10px rgba(255, 85, 85, 0.3);
+}
+
+.windowControls {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--text-dimmer);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  user-select: none;
+}
+
+.windowBtn {
+  display: inline-block;
+  padding: 0.1rem 0.3rem;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  background: var(--surface-3);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text-dim);
+}
+
+/* Card Body */
+.cardBody {
+  padding: clamp(1.25rem, 4vw, 2.25rem);
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+/* --------------------------------------------------------------------------
+   Profile Layout Grid (Avatar + Dossier Fields)
+   -------------------------------------------------------------------------- */
+.profileGrid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2.25rem;
+  align-items: start;
+}
+
+/* Cyberpunk Circuit Avatar Box */
+.avatarWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.avatarBox {
+  width: 130px;
+  height: 155px;
+  background-color: var(--surface-2);
+  background-image: 
+    radial-gradient(circle at 50% 50%, rgba(0, 255, 159, 0.08) 0%, transparent 70%),
+    radial-gradient(circle, var(--border) 1px, transparent 1px);
+  background-size: 100% 100%, 12px 12px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.6);
+}
+
+/* Corner bracket accents on avatar */
+.avatarBox::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 1px dashed var(--border);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.avatarInitials {
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--green);
+  letter-spacing: -0.03em;
+  text-shadow: 0 0 20px var(--green-glow);
+  z-index: 1;
+}
+
+.avatarScanline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--green), transparent);
+  box-shadow: 0 0 8px var(--green);
+  opacity: 0.7;
+  animation: scanSweep 3s linear infinite;
+}
+
+@keyframes scanSweep {
+  0% { transform: translateY(0); opacity: 0; }
+  10% { opacity: 0.8; }
+  90% { opacity: 0.8; }
+  100% { transform: translateY(155px); opacity: 0; }
+}
+
+.avatarId {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text-dimmer);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* --------------------------------------------------------------------------
+   Dossier Data Fields: 3-Column Precise Grid Alignment
+   Col 1: Label (140px) | Col 2: Dotted Leader (60px) | Col 3: Value (1fr)
+   -------------------------------------------------------------------------- */
+.dossierData {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.dataRow {
+  display: grid;
+  grid-template-columns: 140px 60px 1fr;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: clamp(0.78rem, 1.4vw, 0.86rem);
+  line-height: 1.5;
+}
+
+.dataKey {
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Pure CSS Dotted Leader Column (Replaces unpredictable manual dot strings) */
+.dataLeader {
+  display: block;
+  width: 100%;
+  height: 1px;
+  border-bottom: 2px dotted var(--border);
+  opacity: 0.9;
+}
+
+.dataVal {
+  color: var(--text);
+  font-weight: 400;
+  word-break: break-word;
+}
+
+.highlightGreen {
+  color: var(--green);
+  font-weight: 500;
+  text-shadow: 0 0 12px var(--green-glow);
+}
+
+.highlightViolet {
+  color: var(--violet);
+  font-weight: 500;
+}
+
+/* Full-Width Summary Block */
+.summaryBlock {
+  margin-top: 0.5rem;
+  padding-top: 0.85rem;
+  border-top: 1px dashed var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.summaryHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.summaryLabel {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  letter-spacing: 0.12em;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.summaryDivider {
+  flex: 1;
+  height: 1px;
+  background: var(--border-dim);
+}
+
+.summaryText {
+  color: var(--text-dim);
+  line-height: 1.65;
+  font-size: 0.85rem;
+  font-family: var(--font-mono);
+}
+
+/* Threat Level Bar Gauge */
+.threatContainer {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.threatBar {
+  display: inline-flex;
+  gap: 3px;
+  align-items: center;
+}
+
+.threatSegment {
+  width: 12px;
+  height: 9px;
+  border-radius: 1px;
+  border: 1px solid var(--border);
+  transition: var(--fast);
+}
+
+.threatFilled {
+  background: var(--amber);
+  border-color: var(--amber);
+  box-shadow: 0 0 8px rgba(255, 208, 96, 0.4);
+}
+
+.threatEmpty {
+  background: var(--surface-3);
+  border-color: var(--border-dim);
+  opacity: 0.3;
+}
+
+.threatLabel {
+  font-size: 0.72rem;
+  color: var(--amber);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+/* Quick Stats Row */
+.statsRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  padding-top: 1.25rem;
+  border-top: 1px dashed var(--border);
+}
+
+.statBadge {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 0.4rem 0.85rem;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: border-color var(--fast), transform var(--fast);
+}
+
+.statBadge:hover {
+  border-color: var(--green);
+  transform: translateY(-1px);
+}
+
+.statKey {
+  color: var(--text-dimmer);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.statVal {
+  color: var(--green);
+  font-weight: 600;
+  text-shadow: 0 0 8px var(--green-glow);
+}
+
+/* Dynamic System Telemetry Panel */
+.telemetrySection {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.9rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  transition: border-color var(--fast);
+}
+
+.telemetrySection:hover {
+  border-color: var(--border-glow);
+}
+
+.telemetryHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+  border-bottom: 1px solid var(--border-dim);
+  padding-bottom: 0.4rem;
+}
+
+.telemetryLiveIndicator {
+  color: var(--green);
+  font-size: 0.65rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.telemetryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 1rem 1.5rem;
+}
+
+.telemetryItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-family: var(--font-mono);
+}
+
+.telemetryKey {
+  font-size: 0.65rem;
+  color: var(--text-dimmer);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.telemetryVal {
+  font-size: 0.82rem;
+  color: var(--text);
+  font-weight: 500;
+}
+
+.telemetryValOnline {
+  font-size: 0.82rem;
+  color: var(--green);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  text-shadow: 0 0 8px var(--green-glow);
+}
+
+.telemetryDot {
+  font-size: 0.55rem;
+  animation: pulseDot 2s ease-in-out infinite;
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+.telemetryValGreen {
+  font-size: 0.82rem;
+  color: var(--green);
+  font-weight: 600;
+}
+
+.telemetryCoffee {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.coffeeBar {
+  color: var(--amber);
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+}
+
+.coffeePercent {
+  color: var(--text-dim);
+  font-size: 0.72rem;
+}
+
+/* Bioscan Pulse Waveform Bar */
+.bioscanContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.5rem 0;
+}
+
+.bioscanHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--text-dimmer);
+  letter-spacing: 0.08em;
+}
+
+.bioscanStatus {
+  color: var(--green);
+  opacity: 0.8;
+}
+
+.bioscanSvg {
+  width: 100%;
+  height: 28px;
+  overflow: visible;
+}
+
+.waveformPath {
+  stroke: var(--green);
+  stroke-width: 1.5;
+  fill: none;
+  stroke-dasharray: 400;
+  stroke-dashoffset: 400;
+  animation: drawWaveform 4s ease-in-out infinite alternate;
+  filter: drop-shadow(0 0 4px var(--green));
+}
+
+@keyframes drawWaveform {
+  0% {
+    stroke-dashoffset: 400;
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0.7;
+  }
+}
+
+/* Credentials & Education Grid */
+.credentialsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.credentialCard {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1.1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  transition: border-color var(--fast);
+}
+
+.credentialCard:hover {
+  border-color: var(--border-glow);
+}
+
+.cardSubHeader {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-bottom: 1px solid var(--border-dim);
+  padding-bottom: 0.4rem;
+}
+
+.cardSubHeader::before {
+  content: '>';
+  color: var(--green);
+  font-weight: 700;
+}
+
+.certList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.certItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: inherit;
+  text-decoration: none;
+}
+
+.certLink {
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 0.3rem 0.4rem;
+  margin: -0.3rem -0.4rem;
+  transition: background var(--fast), border-color var(--fast);
+  border: 1px solid transparent;
+}
+
+.certLink:hover {
+  background: var(--surface-3);
+  border-color: var(--border);
+}
+
+.certLink:hover .certTitle {
+  color: var(--green);
+}
+
+.certLink:hover .certBullet {
+  text-shadow: 0 0 10px var(--green-glow);
+}
+
+.certLink:hover .certExternal {
+  opacity: 1;
+  color: var(--green);
+}
+
+.certBullet {
+  color: var(--green);
+  font-weight: 700;
+  flex-shrink: 0;
+  transition: text-shadow var(--fast);
+}
+
+.certContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.certTitle {
+  color: var(--text);
+  font-weight: 500;
+  transition: color var(--fast);
+}
+
+.certIssuer {
+  color: var(--text-dim);
+  font-size: 0.72rem;
+}
+
+/* External link indicator on cert title */
+.certExternal {
+  color: var(--green);
+  opacity: 0.6;
+  font-size: 0.75em;
+  margin-left: 3px;
+  transition: opacity var(--fast), color var(--fast);
+}
+
+.eduContent {
+  font-family: var(--font-mono);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.eduDegree {
+  color: var(--text);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.eduInstitution {
+  color: var(--text-dim);
+  font-size: 0.78rem;
+}
+
+.eduPeriod {
+  color: var(--text-dimmer);
+  font-size: 0.72rem;
+  margin-top: 0.2rem;
+}
+
+.eduDivider {
+  height: 1px;
+  background: var(--border-dim);
+  margin: 0.5rem 0;
+}
+
+.eduMetaList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+}
+
+.eduMetaRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.eduMetaKey {
+  color: var(--text-dimmer);
+  letter-spacing: 0.05em;
+}
+
+.eduMetaVal {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.eduMetaValGreen {
+  color: var(--green);
+  font-weight: 600;
+  text-shadow: 0 0 8px var(--green-glow);
+}
+
+.eduMetaValAmber {
+  color: var(--amber);
+  font-weight: 600;
+}
+
+/* Debt classified easter egg: switches to [REDACTED] on hover */
+.debtClassified {
+  color: var(--amber);
+  font-weight: 600;
+  cursor: help;
+  user-select: none;
+  transition: color var(--fast);
+}
+
+.debtHover {
+  display: none;
+}
+
+.debtClassified:hover .debtDefault {
+  display: none;
+}
+
+.debtClassified:hover .debtHover {
+  display: inline;
+  color: #ff5555;
+  text-shadow: 0 0 8px rgba(255, 85, 85, 0.5);
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 860px) {
+  .profileGrid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .avatarWrapper {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 1.25rem;
+  }
+
+  .credentialsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .dataRow {
+    grid-template-columns: 1fr;
+    gap: 0.15rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .dataLeader {
+    display: none;
+  }
+
+  .dataKey {
+    font-size: 0.72rem;
+    color: var(--text-dimmer);
+  }
+
+  .cardHeader {
+    padding: 0.5rem 0.85rem;
+  }
+
+  .classifiedBadge {
+    display: none;
+  }
+}

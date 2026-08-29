@@ -1,0 +1,50 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   FOOTER — CSS Module
+   Minimal 2-line footer with a nerdy git quip.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.footer {
+  border-top: 1px solid var(--border);
+  padding: 2rem 0;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-dimmer);
+}
+
+/* Git humor line */
+.quip {
+  color: var(--text-dim);
+  margin-bottom: 0.45rem;
+  letter-spacing: 0.04em;
+}
+
+.quip::before {
+  content: '// ';
+  color: var(--green);
+  opacity: 0.55;
+}
+
+/* Copyright line */
+.copy {
+  letter-spacing: 0.05em;
+}
+
+/* Keyboard shortcut hint */
+.hint {
+  margin-top: 0.65rem;
+  color: var(--text-dimmer);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  opacity: 0.6;
+}
+
+.hint kbd {
+  font-family: var(--font-mono);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 0 0.3rem;
+  color: var(--green);
+  font-size: 0.65rem;
+}

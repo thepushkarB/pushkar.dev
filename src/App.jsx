@@ -1,482 +1,386 @@
-// import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
-// // import './App.css'
+/*
+┌─────────────────────────────────────────────────────────────────────────┐
+│                             APP.JSX                                     │
+│                                                                         │
+│  Full routing + global keyboard bus + easter eggs:                      │
+│                                                                         │
+│  Routes:                                                                │
+│    /         → Portfolio (all sections)                                 │
+│    /secret   → BIOS boot easter egg                                     │
+│    *         → 404 NotFound                                             │
+│                                                                         │
+│  Global hooks (all in Portfolio component):                             │
+│    useReveal()        — IntersectionObserver scroll reveal              │
+│    useKeyboardNav()   — Tab, G+key, /, ? navigation                     │
+│    useKonamiCode()    — Konami → FSOCIETY modal                         │
+│    useSudoDetect()    — type "sudo" → permission denied toast           │
+│                                                                         │
+│  Easter eggs:                                                           │
+│    [CLASSIFIED] hover → "fsociety clearance required"  (AboutSection)  │
+│    DEBT: CLASSIFIED hover → fsociety clearance required  (AboutSection)            │
+│    Konami code → FSOCIETY modal (Mr. Robot)                             │
+│    type `sudo` → permission denied toast                               │
+│    /secret → BIOS boot screen                                           │
+└─────────────────────────────────────────────────────────────────────────┘
+*/
 
-// function App() {
-//   const [count, setCount] = useState(0)
+import { Routes, Route } from "react-router-dom";
+import { useEffect, useState, useCallback, useRef } from "react";
 
-//   return (
-//     <>
-//       <div>
-//         <a href="https://vite.dev" target="_blank">
-//           <img src={viteLogo} className="logo" alt="Vite logo" />
-//         </a>
-//         <a href="https://react.dev" target="_blank">
-//           <img src={reactLogo} className="logo react" alt="React logo" />
-//         </a>
-//       </div>
-//       <h1>Vite + React</h1>
-//       <div className="card">
-//         <button onClick={() => setCount((count) => count + 1)}>
-//           count is {count}
-//         </button>
-//         <p>
-//           Edit <code>src/App.jsx</code> and save to test HMR
-//         </p>
-//       </div>
-//       <p className="read-the-docs">
-//         Click on the Vite and React logos to learn more
-//       </p>
-//     </>
-//   )
-// }
+/* Sections */
+import Navbar from "./components/Navbar/Navbar";
+import HeroSection from "./components/HeroSection/HeroSection";
+import AboutSection from "./components/AboutSection/AboutSection";
+import ExperienceSection from "./components/ExperienceSection/ExperienceSection";
+import ProjectsSection from "./components/ProjectsSection/ProjectsSection";
+import SkillsSection from "./components/SkillsSection/SkillsSection";
+import ContactSection from "./components/ContactSection/ContactSection";
+import Footer from "./components/Footer/Footer";
 
-// export default App
+/* Modals */
+import KeyboardModal from "./components/Modals/KeyboardModal";
 
+/* Pages */
+import Secret from "./pages/Secret/Secret";
+import NotFound from "./pages/NotFound/NotFound";
 
-import { Routes, Route, Navigate } from 'react-router-dom';
-import Home from './pages/Home';
-import About from './pages/About';
-import Projects from './pages/Projects';
-import Skills from './pages/Skills';
-import Contact from './pages/Contact';
-
-
-// Perplexity aesthetic
-import { useState, useEffect } from 'react'
-import { Search, Sparkles, Code, Briefcase, User, Mail, Github, Linkedin, ExternalLink, ChevronRight, CircleUserRound } from 'lucide-react'
-
-function App() {
-  const [isLoaded, setIsLoaded] = useState(false)
-  const [activeSection, setActiveSection] = useState('search')
-  const [searchQuery, setSearchQuery] = useState('')
-  const [isSearching, setIsSearching] = useState(false)
-
+/* ── Scroll reveal hook ──────────────────────────────────────────────────────── */
+/*
+  Finds all elements with className="reveal" and adds "visible" when they
+  enter the viewport. Fires once per element (observer.unobserve after trigger).
+*/
+function useReveal() {
   useEffect(() => {
-    setIsLoaded(true)
-  }, [])
-
-  const handleSearch = (e) => {
-    if (e && e.preventDefault) e.preventDefault()
-    if (!searchQuery.trim()) return
-    
-    setIsSearching(true)
-    // Simulate search delay
-    setTimeout(() => {
-      setIsSearching(false)
-      setActiveSection('results')
-    }, 1500)
-  }
-
-  const projects = [
-    {
-      title: "AI-Powered Analytics Dashboard",
-      description: "Built with React, TypeScript, and D3.js for real-time data visualization",
-      tech: ["React", "TypeScript", "D3.js", "Node.js"],
-      link: "#"
-    },
-    {
-      title: "E-commerce Platform",
-      description: "Full-stack application with payment integration and inventory management",
-      tech: ["Next.js", "PostgreSQL", "Stripe", "Tailwind"],
-      link: "#"
-    },
-    {
-      title: "Mobile App for Productivity",
-      description: "Cross-platform mobile app built with React Native and Firebase",
-      tech: ["React Native", "Firebase", "Redux", "AsyncStorage"],
-      link: "#"
-    }
-  ]
-
-  const skills = [
-    "JavaScript/TypeScript", "React/Next.js", "Node.js", "Python", 
-    "PostgreSQL", "MongoDB", "AWS", "Docker", "Git", "Tailwind CSS"
-  ]
-
-  return (
-
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/about" element={<About />} />
-      <Route path="/projects" element={<Projects />} />
-      <Route path="/skills" element={<Skills />} />
-      <Route path="/contact" element={<Contact />} />
-    </Routes>
-    // <div className="min-h-screen bg-[url(/landscape_upscale.jpg)] bg-no-repeat bg-cover bg-center mask-b-from-95% text-white">
-    //   {/* Animated background particles */}
-    //   {/* <div className="fixed inset-0 overflow-hidden pointer-events-none">
-    //     {[...Array(50)].map((_, i) => (
-    //       <div
-    //         key={i}
-    //         className="absolute w-1 h-1 bg-purple-400 rounded-full opacity-20 animate-pulse"
-    //         style={{
-    //           left: `${Math.random() * 100}%`,
-    //           top: `${Math.random() * 100}%`,
-    //           animationDelay: `${Math.random() * 3}s`,
-    //           animationDuration: `${2 + Math.random() * 3}s`
-    //         }}
-    //       />
-    //     ))}
-    //   </div> */}
-
-    //   <div className={`relative z-10 transition-all duration-1000 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-    //     {/* Header */}
-    //     <div className="pt-3 px-3">
-    //       <header className="rounded-full border-slate-800/50 backdrop-blur-lg bg-slate-900/20">
-    //         <div className="max-w-7xl mx-auto px-6 py-3">
-    //           <div className="flex items-center justify-between">
-    //             <div className="flex items-center space-x-3">
-    //               {/* <div className="w-10 h-10 bg-gradient-to-br from-purple-400 to-pink-400 rounded-xl flex items-center justify-center">
-    //                 <Sparkles className="w-6 h-6 text-white" />
-    //               </div> */}
-    //               <div className="w-10 h-10 flex items-center justify-center">
-    //                 {/* <CircleUserRound className="w-6 h-6 text-white" /> */}
-    //                 <Sparkles className="text-white" />
-    //               </div>
-    //               <span className="text-xl font-bold text-slate-50 bg-clip-text cursor-pointer">
-    //                 Pushkar Bankar
-    //               </span>
-    //             </div>
-    //             <nav className="hidden md:flex items-center space-x-8 ">
-    //               {['About', 'Projects', 'Skills', 'Contact'].map((item) => (
-    //                 <button
-    //                   key={item}
-    //                   className="text-slate-200 hover:text-white transition-colors duration-200 hover:scale-105 cursor-pointer"
-    //                   onClick={() => setActiveSection(item.toLowerCase())}
-    //                 >
-    //                   {item}
-    //                 </button>
-    //               ))}
-    //             </nav>
-    //           </div>
-    //         </div>
-    //       </header>
-    //     </div>
-
-    //     {/* Main Content */}
-    //     <main className="max-w-4xl mx-auto px-6 py-12">
-    //       {activeSection === 'search' && (
-    //         <div className="text-center space-y-8">
-    //           {/* Intro */}
-    //           <div className="text-left space-y-4">
-    //             <div className="space-y-1">
-    //               <h1 className="text-5xl md:text-5xl font-bold text-slate-800">
-    //                 Hi, I'm Pushkar!
-    //               </h1>
-    //               <p className="text-lg md:text-3xl font-bold text-slate-800">
-    //                 [Full-Stack Developer]
-    //               </p>
-    //             </div>
-
-    //             <div className=" bg-slate-800/30 backdrop-blur-md border border-slate-300/30 rounded-4xl p-4">
-    //               <p className="text-lg text-slate-50 text-shadow-lg/30 text-shadow-slate-700 mx-2.5">
-    //                 A developer who converts coffee into code and ideas into applications.
-    //               </p>
-    //               <p className="text-lg text-slate-50 text-shadow-lg/30 text-shadow-slate-700 mx-2.5">
-    //                 I design and build full-stack web apps with the MERN stack, transforming complex problems into simple, scalable solutions.
-    //               </p>
-    //             </div>
-    //             {/* <p className="text-sm md:text-2xl text-slate-700 text-shadow-lg/30 text-shadow-slate-50 mx-2.5">
-    //               A developer who converts coffee into code and ideas into applications. My toolkit is the MERN stack, and my current obsession is teaching it new tricks with AI.
-    //             </p> */}
-    //           </div>
-
-    //           {/* Search Interface */}
-    //           {/* <div className="max-w-2xl mx-auto">
-    //             <div className="relative group">
-    //               <div className="absolute inset-0 bg-gradient-to-r rounded-2xl blur opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
-    //               <div className="relative bg-slate-800/50 backdrop-blur-xl rounded-2xl border border-slate-700/50 p-1">
-    //                 <div className="flex items-center space-x-4 px-6 py-4">
-    //                   <Search className="w-5 h-5 text-slate-400" />
-    //                   <input
-    //                     type="text"
-    //                     placeholder="Ask me about my projects, skills, or experience..."
-    //                     value={searchQuery}
-    //                     onChange={(e) => setSearchQuery(e.target.value)}
-    //                     onKeyDown={(e) => e.key === 'Enter' && handleSearch(e)}
-    //                     className="flex-1 bg-transparent text-white placeholder-slate-400 outline-none text-lg"
-    //                   />
-    //                   <button
-    //                     onClick={handleSearch}
-    //                     disabled={!searchQuery.trim() || isSearching}
-    //                     className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-2 rounded-xl font-medium hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:hover:scale-100"
-    //                   >
-    //                     {isSearching ? (
-    //                       <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-    //                     ) : (
-    //                       'Search'
-    //                     )}
-    //                   </button>
-    //                 </div>
-    //               </div>
-    //             </div>
-    //           </div> */}
-
-    //           {/* Quick Actions */}
-    //           <div className="flex flex-wrap justify-center gap-4 mt-8">
-    //             {[
-    //               { icon: Code, label: 'View Projects', action: () => setActiveSection('projects') },
-    //               { icon: User, label: 'About Me', action: () => setActiveSection('about') },
-    //               { icon: Briefcase, label: 'Skills', action: () => setActiveSection('skills') },
-    //               { icon: Mail, label: 'Contact', action: () => setActiveSection('contact') }
-    //             ].map(({ icon: Icon, label, action }) => (
-    //               <button
-    //                 key={label}
-    //                 onClick={action}
-    //                 className="flex items-center space-x-2 bg-slate-800/20 hover:bg-slate-800/40 backdrop-blur-md border border-slate-300/60 rounded-full px-4 py-3 transition-all duration-200 hover:scale-105 cursor-pointer"
-    //               >
-    //                 <Icon className="w-4 h-4" />
-    //                 <span>{label}</span>
-    //               </button>
-    //             ))}
-    //           </div>
-    //         </div>
-    //       )}
-
-
-    //       {/* Projects */}
-    //       {activeSection === 'projects' && (
-    //         <div className="space-y-8">
-    //           <div className="text-center space-y-4">
-    //             <h2 className="text-4xl font-bold">Featured Projects</h2>
-    //             <p className="text-slate-300 text-lg">Some of my recent work and contributions</p>
-    //           </div>
-    //           <div className="grid gap-6">
-    //             {projects.map((project, index) => (
-    //               <div
-    //                 key={index}
-    //                 className="group bg-slate-800/30 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-6 hover:bg-slate-800/50 transition-all duration-300 hover:scale-[1.02]"
-    //               >
-    //                 <div className="flex items-start justify-between">
-    //                   <div className="space-y-3 flex-1">
-    //                     <h3 className="text-xl font-semibold group-hover:text-purple-300 transition-colors">
-    //                       {project.title}
-    //                     </h3>
-    //                     <p className="text-slate-300">{project.description}</p>
-    //                     <div className="flex flex-wrap gap-2">
-    //                       {project.tech.map((tech) => (
-    //                         <span
-    //                           key={tech}
-    //                           className="bg-purple-500/20 text-purple-300 px-3 py-1 rounded-lg text-sm border border-purple-500/30"
-    //                         >
-    //                           {tech}
-    //                         </span>
-    //                       ))}
-    //                     </div>
-    //                   </div>
-    //                   <ExternalLink className="w-5 h-5 text-slate-400 group-hover:text-purple-300 transition-colors ml-4" />
-    //                 </div>
-    //               </div>
-    //             ))}
-    //           </div>
-    //         </div>
-    //       )}
-
-    //       {/* Skills */}
-    //       {activeSection === 'skills' && (
-    //         <div className="space-y-8">
-    //           <div className="text-center space-y-4">
-    //             <h2 className="text-4xl font-bold">Technical Skills</h2>
-    //             <p className="text-slate-300 text-lg">Technologies I work with regularly</p>
-    //           </div>
-    //           <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-    //             {skills.map((skill, index) => (
-    //               <div
-    //                 key={skill}
-    //                 className="bg-slate-800/30 backdrop-blur-sm border border-slate-700/50 rounded-xl p-4 text-center hover:bg-slate-800/50 transition-all duration-200 hover:scale-105"
-    //                 style={{
-    //                   animationDelay: `${index * 100}ms`
-    //                 }}
-    //               >
-    //                 <span className="font-medium">{skill}</span>
-    //               </div>
-    //             ))}
-    //           </div>
-    //         </div>
-    //       )}
-
-    //       {/* About */}
-    //       {activeSection === 'about' && (
-    //         <div className="space-y-8 max-w-3xl mx-auto">
-    //           <div className="text-center space-y-4">
-    //             <h2 className="text-4xl font-bold">About Me</h2>
-    //             <p className="text-slate-300 text-lg">Passionate developer with a love for creating digital experiences</p>
-    //           </div>
-    //           <div className="bg-slate-800/30 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-8">
-    //             <div className="prose prose-invert max-w-none">
-    //               <p className="text-lg leading-relaxed text-slate-200">
-    //                 I'm a full-stack developer with 3+ years of experience building web applications. 
-    //                 I specialize in React, Node.js, and modern web technologies. I'm passionate about 
-    //                 writing clean, maintainable code and creating user experiences that delight.
-    //               </p>
-    //               <p className="text-lg leading-relaxed text-slate-200 mt-6">
-    //                 When I'm not coding, you can find me exploring new technologies, contributing to 
-    //                 open source projects, or sharing knowledge with the developer community.
-    //               </p>
-    //             </div>
-    //           </div>
-    //         </div>
-    //       )}
-
-    //       {/* Contact */}
-    //       {/* {activeSection === 'contact' && (
-    //         <div className="space-y-8 max-w-2xl mx-auto">
-    //           <div className="text-center text-slate-900 space-y-4">
-    //             <h2 className="text-4xl font-bold">Get In Touch</h2>
-    //             <p className="text-lg text-slate-700 text-shadow-lg/30 text-shadow-slate-50">Let's discuss your next project or opportunity</p>
-    //           </div>
-    //           <div className="grid gap-4">
-    //             {[
-    //               { icon: Mail, label: 'pushkarbankar.sit.comp@gmail.com', href: 'mailto:pushkarbankar.sit.comp@gmail.com' },
-    //               { icon: Github, label: 'GitHub Profile', href: 'https://github.com/thepushkarb' },
-    //               { icon: Linkedin, label: 'LinkedIn Profile', href: 'https://www.linkedin.com/in/pushkar-bankar-22a3551b9/' }
-    //             ].map(({ icon: Icon, label, href }) => (
-    //               <a
-    //                 key={label}
-    //                 href={href}
-    //                 className="flex items-center justify-between bg-slate-800/20 backdrop-blur-sm border border-slate-300/60 rounded-4xl p-6 hover:bg-slate-800/40 transition-all duration-200 hover:scale-105 group"
-    //               >
-    //                 <div className="flex items-center space-x-4">
-    //                   <div className="w-12 h-12 bg-gradient-to-br rounded-xl flex items-center justify-center">
-    //                     <Icon className="w-6 h-6 text-white" />
-    //                   </div>
-    //                   <span className="text-lg font-medium">{label}</span>
-    //                 </div>
-    //                 <ChevronRight className="w-5 h-5 text-slate-400 group-hover:text-purple-300 transition-colors" />
-    //               </a>
-    //             ))}
-    //           </div>
-    //         </div>
-    //       )} */}
-    //     </main>
-
-    //     {/* Footer */}
-    //     {/* <footer className="border-t border-slate-800/50 mt-20">
-    //       <div className="max-w-7xl mx-auto px-6 py-8">
-    //         <div className="text-center text-slate-400">
-    //           <p>&copy; 2025 Your Name. Built with React, Vite, and Tailwind CSS.</p>
-    //         </div>
-    //       </div>
-    //     </footer> */}
-    //   </div>
-    // </div>
-  )
+    const els = document.querySelectorAll(".reveal");
+    const observer = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("visible");
+            observer.unobserve(e.target);
+          }
+        }),
+      { threshold: 0.1, rootMargin: "0px 0px -60px 0px" }
+    );
+    els.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
 }
 
-export default App
+/* Keyboard navigation hook */
+/*
+  Handles:
+    Tab / Shift+Tab  → cycle sections
+    G + A/E/P/S/C   → Vim-style jump (1s timeout between G and next key)
+    /                → jump to contact
+    ?                → toggle keyboard modal (callback)
+*/
+const SECTIONS = ["hero", "about", "experience", "projects", "skills", "contact"];
 
+function useKeyboardNav(onToggleHelp) {
+  const gPressed = useRef(false);
+  const gTimer = useRef(null);
 
-// CLI aesthetic
-// function App() {
-//   return (
-//     <div className="min-h-screen bg-black text-pink-500 font-mono flex flex-col items-center py-10 px-6">
-//       {/* Glitch Image */}
-//       <img
-//         src="/glitch-girl.png" // replace with your image path
-//         alt="Glitch Girl"
-//         className="w-40 mb-6"
-//       />
+  const scrollTo = (id) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
 
-//       {/* Header */}
-//       <h1 className="text-3xl font-bold">♡ alexine</h1>
+  const currentSectionIndex = () =>
+    SECTIONS.findIndex((id) => {
+      const el = document.getElementById(id);
+      if (!el) return false;
+      const rect = el.getBoundingClientRect();
+      return rect.top <= 100 && rect.bottom > 100;
+    });
 
-//       {/* Bio */}
-//       <div className="mt-4 text-center space-y-2">
-//         <p>Alexine Le Port</p>
-//         <p>
-//           Here's my only fixed address <br />
-//           I'm a traveler, bioinformatics MSc student &amp; I run a small clothing
-//           business
-//         </p>
-//         <p>&gt; currently at CGSI summerschool in LA</p>
-//       </div>
+  useEffect(() => {
+    const handler = (e) => {
+      /* Skip when user is typing in a form field */
+      if (["INPUT", "TEXTAREA"].includes(e.target.tagName)) return;
 
-//       {/* Playlist Link */}
-//       <div className="mt-6">
-//         <a
-//           href="#"
-//           className="underline flex items-center gap-2 hover:text-pink-300"
-//         >
-//           ☣ listen to my sick playlists ☣
-//         </a>
-//       </div>
+      /* ? → toggle keyboard shortcuts modal */
+      if (e.key === "?") {
+        onToggleHelp();
+        return;
+      }
 
-//       {/* Interests */}
-//       <div className="mt-6 max-w-xl text-center">
-//         <p>
-//           interest : bio/ml, computer arch, theology, philosophy, music, arts,
-//           poetry, opera, theater, horror, books, hiking, experiencing and pushing
-//           the boundaries of my understanding
-//         </p>
-//       </div>
+      /* G → start Vim-style jump sequence (1 second window for second key) */
+      if (e.key === "g" || e.key === "G") {
+        gPressed.current = true;
+        clearTimeout(gTimer.current);
+        gTimer.current = setTimeout(() => {
+          gPressed.current = false;
+        }, 1000);
+        return;
+      }
 
-//       {/* Hates */}
-//       <div className="mt-6 max-w-xl text-center">
-//         <p>
-//           pure hate : journalism, ideology,{" "}
-//           <a href="#" className="underline">
-//             this kind of bad faith
-//           </a>
-//           , authority, advertising, 2-factor authentication and Windows
-//         </p>
-//       </div>
+      /* Second key after G → jump to mapped section */
+      if (gPressed.current) {
+        const map = {
+          a: "about",
+          e: "experience",
+          p: "projects",
+          s: "skills",
+          c: "contact",
+        };
+        const target = map[e.key.toLowerCase()];
+        if (target) {
+          scrollTo(target);
+          gPressed.current = false;
+          clearTimeout(gTimer.current);
+          return;
+        }
+      }
 
-//       {/* Links */}
-//       <div className="mt-10 text-left space-y-3">
-//         <p>↓ will update soon</p>
+      /* Tab / Shift+Tab → cycle sections sequentially */
+      if (e.key === "Tab") {
+        e.preventDefault();
+        const idx = currentSectionIndex();
+        const next = e.shiftKey
+          ? Math.max(0, idx - 1)
+          : Math.min(SECTIONS.length - 1, idx + 1);
+        scrollTo(SECTIONS[next]);
+        return;
+      }
 
-//         <ul className="list-disc list-inside">
-//           <li>
-//             take a look at
-//             <ul className="list-circle list-inside ml-4">
-//               <li>
-//                 <a href="#" className="underline">
-//                   my mid articles... &gt;
-//                 </a>
-//               </li>
-//               <li>
-//                 <a href="#" className="underline">
-//                   my recommendations... &gt;
-//                 </a>
-//               </li>
-//             </ul>
-//           </li>
+      /* / → jump to contact */
+      if (e.key === "/") {
+        e.preventDefault();
+        scrollTo("contact");
+      }
+    };
 
-//           <li>
-//             my links
-//             <ul className="list-circle list-inside ml-4">
-//               <li>
-//                 <a href="#" className="underline">
-//                   insta
-//                 </a>
-//               </li>
-//               <li>
-//                 <a href="#" className="underline">
-//                   date me
-//                 </a>
-//               </li>
-//               <li>
-//                 <a href="mailto:alexine@email.com" className="underline">
-//                   email me ♡
-//                 </a>
-//               </li>
-//             </ul>
-//           </li>
-//         </ul>
-//       </div>
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [onToggleHelp]);
+}
 
-//       {/* Footer Skull */}
-//       <div className="mt-10">
-//         <img
-//           src="/skull.png" // add your skull image here
-//           alt="Skull"
-//           className="w-16 opacity-80"
-//         />
-//       </div>
-//     </div>
-//   );
-// }
+/* Konami code hook */
+/*
+  ↑↑↓↓←→←→BA → fires `callback`
+*/
+const KONAMI = [
+  "ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown",
+  "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight",
+  "b", "a",
+];
 
-// export default App;
+function useKonamiCode(callback) {
+  const seq = useRef([]);
+
+  useEffect(() => {
+    const handler = (e) => {
+      seq.current = [...seq.current, e.key].slice(-KONAMI.length);
+      if (seq.current.join(",") === KONAMI.join(",")) callback();
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [callback]);
+}
+
+/* sudo detect hook */
+/*
+  Buffers the last 6 keypresses globally. If the buffer contains "sudo",
+  fires `callback`. Skips input / textarea elements.
+*/
+function useSudoDetect(callback) {
+  const buf = useRef("");
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (["INPUT", "TEXTAREA"].includes(e.target.tagName)) return;
+      if (e.key.length === 1) {
+        buf.current = (buf.current + e.key).slice(-6);
+        if (buf.current.toLowerCase().includes("sudo")) {
+          callback();
+          buf.current = "";
+        }
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [callback]);
+}
+
+/* FSOCIETY Modal */
+/*
+  Appears on Konami code. Mr. Robot reference.
+  Dismiss: click backdrop or any key.
+*/
+function FsocietyModal({ onClose }) {
+  useEffect(() => {
+    const handler = (e) => {
+      if (e.key === "Escape" || e.key !== undefined) onClose();
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [onClose]);
+
+  /* Prevent body scroll */
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = ""; };
+  }, []);
+
+  return (
+    <div
+      style={{
+        position: "fixed",
+        inset: 0,
+        background: "rgba(0,0,0,0.88)",
+        backdropFilter: "blur(6px)",
+        zIndex: 2000,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "1rem",
+      }}
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label="FSOCIETY Easter Egg"
+    >
+      <div
+        style={{
+          fontFamily: "var(--font-mono)",
+          fontSize: "clamp(0.72rem, 1.8vw, 0.88rem)",
+          color: "#00ff9f",
+          lineHeight: 1.8,
+          textAlign: "left",
+          textShadow: "0 0 12px rgba(0,255,159,0.5)",
+          maxWidth: "440px",
+          border: "1px solid rgba(0,255,159,0.3)",
+          padding: "2rem 2.5rem",
+          borderRadius: "4px",
+          background: "#050505",
+          boxShadow: "0 0 60px rgba(0,255,159,0.12)",
+          whiteSpace: "pre",
+        }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {`╔══════════════════════════════════╗
+║   F  S  O  C  I  E  T  Y        ║
+║   ─────────────────────          ║
+║   Hello, friend.                 ║
+║                                  ║
+║   You found the konami code.     ║
+║   The system is rigged.          ║
+║   npm install revolution         ║
+║                                  ║
+║   // elliot would be proud       ║
+╚══════════════════════════════════╝`}
+      </div>
+    </div>
+  );
+}
+
+/* sudo Permission Denied Toast */
+/*
+  Appears at the bottom of the screen for 3 seconds when user types "sudo".
+*/
+function SudoToast() {
+  return (
+    <div
+      style={{
+        position: "fixed",
+        bottom: "2rem",
+        left: "50%",
+        transform: "translateX(-50%)",
+        background: "var(--surface)",
+        border: "1px solid rgba(0,255,159,0.35)",
+        borderRadius: "4px",
+        padding: "0.65rem 1.25rem",
+        fontFamily: "var(--font-mono)",
+        fontSize: "0.78rem",
+        color: "#00ff9f",
+        zIndex: 3000,
+        boxShadow: "0 8px 32px rgba(0,0,0,0.5), 0 0 20px rgba(0,255,159,0.1)",
+        whiteSpace: "nowrap",
+        animation: "fadeInUp 0.2s ease",
+        letterSpacing: "0.04em",
+      }}
+      role="status"
+      aria-live="polite"
+    >
+      sudo: nice try, human. Permission denied. 😉
+    </div>
+  );
+}
+
+/* Portfolio page (all sections) */
+function Portfolio() {
+  const [showKeyboardModal, setShowKeyboardModal] = useState(false);
+  const [showFsocietyModal, setShowFsocietyModal] = useState(false);
+  const [showSudoToast, setShowSudoToast] = useState(false);
+
+  /* Toggle keyboard modal — called by useKeyboardNav on `?` key */
+  const toggleHelp = useCallback(
+    () => setShowKeyboardModal((prev) => !prev),
+    []
+  );
+
+  /* Scroll reveal — fires IntersectionObserver for .reveal elements */
+  useReveal();
+
+  /* Keyboard navigation */
+  useKeyboardNav(toggleHelp);
+
+  /* Easter egg: Konami code → FSOCIETY modal */
+  useKonamiCode(useCallback(() => setShowFsocietyModal(true), []));
+
+  /* Easter egg: type `sudo` → permission denied toast for 3s */
+  useSudoDetect(
+    useCallback(() => {
+      setShowSudoToast(true);
+      setTimeout(() => setShowSudoToast(false), 3000);
+    }, [])
+  );
+
+  /* Esc closes all modals */
+  useEffect(() => {
+    const handler = (e) => {
+      if (e.key === "Escape") {
+        setShowKeyboardModal(false);
+        setShowFsocietyModal(false);
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, []);
+
+  return (
+    <>
+      <Navbar />
+      <main>
+        <HeroSection />
+        <AboutSection />
+        <ExperienceSection />
+        <ProjectsSection />
+        <SkillsSection />
+        <ContactSection />
+      </main>
+      <Footer />
+
+      {/* Conditional overlays */}
+      {showKeyboardModal && (
+        <KeyboardModal onClose={() => setShowKeyboardModal(false)} />
+      )}
+      {showFsocietyModal && (
+        <FsocietyModal onClose={() => setShowFsocietyModal(false)} />
+      )}
+      {showSudoToast && <SudoToast />}
+    </>
+  );
+}
+
+/* App root — routing */
+export default function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<Portfolio />} />
+      <Route path="/secret" element={<Secret />} />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+  );
+}

@@ -1,0 +1,261 @@
+/* ==========================================================================
+   HERO SECTION MODULE — Techno-Brutalist Terminal Aesthetic
+   ========================================================================== */
+
+.hero {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh; /* Mobile browser address-bar viewport fix */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-top: 5rem; /* Clearance for fixed top Navbar */
+  overflow: hidden;
+  background-color: var(--bg);
+}
+
+/* Subtle ambient radial glow behind hero content */
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(600px, 80vw);
+  height: min(400px, 60vh);
+  background: radial-gradient(
+    ellipse,
+    rgba(0, 255, 159, 0.04) 0%,
+    rgba(200, 181, 255, 0.02) 40%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.centerContent {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  max-width: var(--container-max);
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem var(--container-pad);
+}
+
+/* Terminal prompt indicator: $ whoami / sys init */
+.terminalTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: clamp(0.75rem, 1.5vw, 0.85rem);
+  color: var(--text-dim);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 0.35rem 0.85rem;
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.05em;
+}
+
+.promptSymbol {
+  color: var(--green);
+  font-weight: 700;
+}
+
+/* Giant Main Headline (Display typography with responsive fluid clamp) */
+.heroName {
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 8.5vw, 6.5rem);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  text-transform: uppercase;
+  margin-bottom: 1.25rem;
+  word-break: break-word;
+  user-select: none;
+}
+
+/* Typewriter role container */
+.roleContainer {
+  display: flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: clamp(1rem, 2.8vw, 1.65rem);
+  color: var(--green);
+  margin-bottom: 2.5rem;
+  min-height: 2.2rem;
+  text-shadow: 0 0 15px var(--green-glow);
+}
+
+.rolePrefix {
+  color: var(--green);
+  font-weight: 700;
+  margin-right: 0.5rem;
+  opacity: 0.8;
+}
+
+.cursor {
+  display: inline-block;
+  color: var(--green);
+  margin-left: 2px;
+  animation: blink 0.9s step-end infinite;
+  font-weight: 300;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* CTA Button Group */
+.ctaGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  width: 100%;
+}
+
+/* Base Terminal Button */
+.ctaBtn {
+  font-family: var(--font-mono);
+  font-size: clamp(0.8rem, 1.5vw, 0.9rem);
+  padding: 0.85rem 1.65rem;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all var(--med);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Primary Button: Phosphor Green Outline -> Glowing fill on hover */
+.ctaBtnPrimary {
+  composes: ctaBtn;
+  color: var(--green);
+  border: 1px solid var(--green);
+  background: rgba(0, 255, 159, 0.03);
+}
+
+.ctaBtnPrimary:hover {
+  background: var(--green-dim);
+  box-shadow: 0 0 25px var(--green-glow), inset 0 0 15px var(--green-dim);
+  transform: translateY(-2px);
+}
+
+/* Secondary Button: Dim Muted Outline */
+.ctaBtnSecondary {
+  composes: ctaBtn;
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.ctaBtnSecondary:hover {
+  color: var(--text);
+  border-color: var(--text-dim);
+  background: var(--surface-2);
+  transform: translateY(-2px);
+}
+
+.btnPrefix {
+  opacity: 0.5;
+  transition: opacity var(--fast);
+}
+
+.ctaBtnPrimary:hover .btnPrefix,
+.ctaBtnSecondary:hover .btnPrefix {
+  opacity: 1;
+}
+
+/* ==========================================================================
+   SYSTEM STATUS TELEMETRY BAR (Bottom of Hero)
+   ========================================================================== */
+
+.statusFooter {
+  position: relative;
+  z-index: 2;
+  border-top: 1px solid var(--border-dim);
+  background: rgba(17, 17, 17, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 0.85rem 0;
+}
+
+.statusInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: clamp(0.65rem, 1.2vw, 0.75rem);
+  color: var(--text-dimmer);
+  letter-spacing: 0.05em;
+}
+
+.statusText {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.online {
+  color: var(--green);
+  font-weight: 600;
+  text-shadow: 0 0 8px var(--green-glow);
+}
+
+/* Scroll indicator with bounce animation */
+.scrollIndicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-dim);
+  transition: color var(--fast);
+}
+
+.scrollIndicator:hover {
+  color: var(--green);
+}
+
+.scrollArrow {
+  animation: bounce 1.8s infinite ease-in-out;
+  display: inline-block;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(4px); }
+}
+
+/* ==========================================================================
+   RESPONSIVE BREAKPOINTS
+   ========================================================================== */
+
+@media (max-width: 640px) {
+  .hero {
+    padding-top: 4.5rem;
+  }
+
+  .ctaGroup {
+    flex-direction: column;
+  }
+
+  .ctaBtn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .statusInner {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+  }
+}
