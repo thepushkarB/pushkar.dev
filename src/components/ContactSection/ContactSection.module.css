@@ -97,6 +97,33 @@
   border-left-color: var(--green);
 }
 
+/* Styled as button but looks and behaves identical to link rows */
+.resumeContactRow {
+  width: 100%;
+  background: none;
+  border: none;
+  border-left: 2px solid transparent;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.resumeContactRow:hover {
+  background: var(--surface-2);
+  border-left-color: var(--green);
+}
+
+.resumeContactRow:hover .rowVal {
+  color: var(--green);
+}
+
+.resumeContactRow:focus-visible {
+  outline: none;
+  background: var(--surface-2);
+  border-left-color: var(--green);
+}
+
 /* > prompt glyph */
 .rowPrompt {
   font-family: var(--font-mono);

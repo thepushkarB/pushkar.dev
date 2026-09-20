@@ -39,6 +39,7 @@ import Footer from "./components/Footer/Footer";
 
 /* Modals */
 import KeyboardModal from "./components/Modals/KeyboardModal";
+import ResumeModal from "./components/Modals/ResumeModal";
 
 /* Pages */
 import Secret from "./pages/Secret/Secret";
@@ -77,7 +78,7 @@ function useReveal() {
 */
 const SECTIONS = ["hero", "about", "experience", "projects", "skills", "contact"];
 
-function useKeyboardNav(onToggleHelp) {
+function useKeyboardNav(onToggleHelp, onOpenResume) {
   const gPressed = useRef(false);
   const gTimer = useRef(null);
 
@@ -117,6 +118,15 @@ function useKeyboardNav(onToggleHelp) {
 
       /* Second key after G → jump to mapped section */
       if (gPressed.current) {
+        // check for resume trigger - if 2nd keydown is 'r'
+        if(e.key.toLowerCase() === 'r') {
+            onOpenResume();
+            gPressed.current = false;
+            clearTimeout(gTimer.current);
+            return;
+        }
+
+        // else
         const map = {
           a: "about",
           e: "experience",
@@ -153,7 +163,7 @@ function useKeyboardNav(onToggleHelp) {
 
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [onToggleHelp]);
+  }, [onToggleHelp, onOpenResume]);
 }
 
 /* Konami code hook */
@@ -260,7 +270,7 @@ function FsocietyModal({ onClose }) {
         onClick={(e) => e.stopPropagation()}
       >
         {`╔══════════════════════════════════╗
-║   F  S  O  C  I  E  T  Y        ║
+║   F  S  O  C  I  E  T  Y         ║
 ║   ─────────────────────          ║
 ║   Hello, friend.                 ║
 ║                                  ║
@@ -308,11 +318,18 @@ function SudoToast() {
   );
 }
 
+
+
+
 /* Portfolio page (all sections) */
 function Portfolio() {
-  const [showKeyboardModal, setShowKeyboardModal] = useState(false);
-  const [showFsocietyModal, setShowFsocietyModal] = useState(false);
-  const [showSudoToast, setShowSudoToast] = useState(false);
+    const [showKeyboardModal, setShowKeyboardModal] = useState(false);
+    const [showFsocietyModal, setShowFsocietyModal] = useState(false);
+    const [showSudoToast, setShowSudoToast] = useState(false);
+
+    // Resume modal
+    const [ showResumeModal, setShowResumeModal ] = useState(false);
+    const openResume  = useCallback(() => setShowResumeModal(true), []);
 
   /* Toggle keyboard modal — called by useKeyboardNav on `?` key */
   const toggleHelp = useCallback(
@@ -324,7 +341,7 @@ function Portfolio() {
   useReveal();
 
   /* Keyboard navigation */
-  useKeyboardNav(toggleHelp);
+  useKeyboardNav(toggleHelp, openResume);
 
   /* Easter egg: Konami code → FSOCIETY modal */
   useKonamiCode(useCallback(() => setShowFsocietyModal(true), []));
@@ -343,6 +360,7 @@ function Portfolio() {
       if (e.key === "Escape") {
         setShowKeyboardModal(false);
         setShowFsocietyModal(false);
+        setShowResumeModal(false);
       }
     };
     window.addEventListener("keydown", handler);
@@ -351,14 +369,14 @@ function Portfolio() {
 
   return (
     <>
-      <Navbar />
+      <Navbar onResumeClick={openResume}/>
       <main>
         <HeroSection />
-        <AboutSection />
+        <AboutSection onResumeClick={openResume} />
         <ExperienceSection />
         <ProjectsSection />
         <SkillsSection />
-        <ContactSection />
+        <ContactSection onResumeClick={openResume} />
       </main>
       <Footer />
 
@@ -370,9 +388,14 @@ function Portfolio() {
         <FsocietyModal onClose={() => setShowFsocietyModal(false)} />
       )}
       {showSudoToast && <SudoToast />}
+      {/* Resume Modal */}
+      {showResumeModal && (
+        <ResumeModal onClose={() => setShowResumeModal(false)}/>
+      )}
     </>
   );
 }
+
 
 /* App root — routing */
 export default function App() {

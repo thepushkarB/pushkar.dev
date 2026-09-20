@@ -42,7 +42,7 @@ const LINKS = [
   },
 ];
 
-export default function ContactSection() {
+export default function ContactSection({ onResumeClick }) {
   return (
     /* Section id="contact" required for keyboard nav & scroll-spy */
     <section
@@ -88,6 +88,20 @@ export default function ContactSection() {
               <span className={styles.rowArrow} aria-hidden="true">↗</span>
             </a>
           ))}
+
+          {/* Resume link row */}
+          <button
+            type="button"
+            className={`${styles.contactRow} ${styles.resumeContactRow}`}
+            onClick={onResumeClick}
+            aria-label="Open resume download"
+            id="contact-resume-btn"
+          >
+            <span className={styles.rowPrompt}>{">"}</span>
+            <span className={styles.rowKey}>[resume]</span>
+            <span className={styles.rowVal}>pushkar_resume.pdf</span>
+            <span className={styles.rowArrow} aria-hidden="true">↗</span>
+          </button>
 
           {/* Status lines */}
           <div className={styles.statusLines}>

@@ -26,6 +26,7 @@ const SHORTCUTS = [
       { keys: ["G", "P"],        desc: "Jump to Projects" },
       { keys: ["G", "S"],        desc: "Jump to Skills" },
       { keys: ["G", "C"],        desc: "Jump to Contact" },
+      { keys: ["G", "R"],        desc: "Open Resume Datashard" },
     ],
   },
   {

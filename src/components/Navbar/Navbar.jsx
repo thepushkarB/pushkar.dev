@@ -10,7 +10,7 @@ const NAV_LINKS = [
   { label: 'Contact',    href: '#contact',    key: 'c' },
 ];
 
-export default function Navbar() {
+export default function Navbar({ onResumeClick }) {
   const [active, setActive]     = useState('');
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -99,6 +99,21 @@ export default function Navbar() {
                 </a>
               </li>
             ))}
+
+            {/* Resume Datashard Trigger */}
+            <li>
+                <button
+                    className={styles.resumeBtn}
+                    onClick={onResumeClick}
+                    aria-label="Open resume download"
+                    id="navbar-resume-btn"
+                >
+                    <span className={styles.resumeBtnBracket}>[./</span>
+                    resume
+                    <span className={styles.resumeBtnBracket}>]</span>
+                </button>
+            </li>
+
           </ul>
 
           {/* Mobile hamburger */}
@@ -132,6 +147,21 @@ export default function Navbar() {
               </a>
             </li>
           ))}
+
+          {/* Mobile Resume Link */}
+            <li>
+                <button
+                    className={`${styles.drawerLink} ${styles.drawerResumeBtn}`}
+                    onClick={() => {
+                        setMenuOpen(false); // Close drawer first
+                        onResumeClick();    // Open modal
+                    }}
+                    tabIndex={menuOpen ? 0 : -1}
+                >
+                    <span className={styles.drawerPrompt}>&gt;</span>
+                    Resume
+                </button>
+            </li>
         </ul>
       </div>
 

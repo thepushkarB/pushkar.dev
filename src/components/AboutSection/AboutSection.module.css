@@ -101,6 +101,34 @@
   box-shadow: 0 0 10px rgba(255, 85, 85, 0.3);
 }
 
+/* Resume declassify button in dossier header */
+.declassifyBtn {
+  font-family: var(--font-mono);
+  font-size: 0.63rem;
+  color: var(--green);
+  background: var(--green-dim);
+  border: 1px solid rgba(0, 255, 159, 0.3);
+  border-radius: 2px;
+  padding: 0.15rem 0.5rem;
+  cursor: pointer;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  transition: color var(--fast), background var(--fast),
+              border-color var(--fast), box-shadow var(--fast);
+  white-space: nowrap;
+}
+
+.declassifyBtn:hover {
+  background: rgba(0, 255, 159, 0.2);
+  border-color: var(--green);
+  box-shadow: 0 0 10px rgba(0, 255, 159, 0.25);
+}
+
+.declassifyBtn:focus-visible {
+  outline: none;
+  border-color: var(--green);
+}
+
 .windowControls {
   display: flex;
   align-items: center;
@@ -791,7 +819,8 @@
     padding: 0.5rem 0.85rem;
   }
 
-  .classifiedBadge {
+  .classifiedBadge,
+  .declassifyBtn {
     display: none;
   }
 }

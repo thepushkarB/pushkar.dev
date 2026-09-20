@@ -1,0 +1,258 @@
+/* src/components/Modals/ResumeModal.module.css */
+
+/* Backdrop overlay with blur */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  animation: backdropFadeIn 0.18s ease;
+}
+
+@keyframes backdropFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/*
+  Modal Panel — Shutter Snap Animation
+  
+  Why clip-path instead of height/scaleY?
+  clip-path is GPU-composited — it runs on the compositor thread and stays smooth at 60fps even if the main JS thread is busy (zero layout reflow).
+  
+  Polygon coordinates:
+  - Start: (0% 50%, 100% 50%, 100% 50%, 0% 50%) = a zero-height horizontal laser line
+  - End:   (0% 0%, 100% 0%, 100% 100%, 0% 100%) = fully expanded rectangle
+*/
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--border-glow);
+  border-radius: 6px;
+  width: 100%;
+  max-width: 520px;
+  box-shadow:
+    0 0 60px rgba(0, 255, 159, 0.08),
+    0 0 120px rgba(0, 255, 159, 0.04),
+    0 24px 64px rgba(0, 0, 0, 0.8);
+  animation: shutterSnap 0.18s var(--ease) forwards;
+  font-family: var(--font-mono);
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+}
+
+@keyframes shutterSnap {
+  from {
+    clip-path: polygon(0% 50%, 100% 50%, 100% 50%, 0% 50%);
+    opacity: 0.4;
+  }
+  to {
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+    opacity: 1;
+  }
+}
+
+/* Phosphor pulse triggered when extraction completes */
+.modalPulse {
+  animation: shutterSnap 0.18s var(--ease) forwards, borderPulse 0.4s ease forwards;
+}
+
+@keyframes borderPulse {
+  0%   { box-shadow: 0 0 0 1px rgba(0, 255, 159, 0.6), 0 0 40px rgba(0, 255, 159, 0.3); }
+  60%  { box-shadow: 0 0 0 2px rgba(0, 255, 159, 0.9), 0 0 80px rgba(0, 255, 159, 0.5); }
+  100% { box-shadow: 0 0 60px rgba(0, 255, 159, 0.08), 0 24px 64px rgba(0, 0, 0, 0.8); }
+}
+
+/* Header Bar */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.75rem 1.25rem;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+}
+
+.headerIcon {
+  color: var(--green);
+  font-size: 0.82rem;
+  flex-shrink: 0;
+}
+
+.headerTitle {
+  color: var(--green);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-shadow: 0 0 12px rgba(0, 255, 159, 0.5);
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.closeBtn {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  padding: 0.2rem 0.5rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: border-color var(--fast), color var(--fast);
+}
+
+.closeBtn:hover {
+  border-color: var(--green);
+  color: var(--green);
+}
+
+/* Telemetry Block */
+.telemetryBlock {
+  padding: 1.25rem 1.5rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  border-bottom: 1px solid var(--border);
+}
+
+/*
+  3-column grid matching the AboutSection dossier rows:
+  Col 1: key label (fixed width)
+  Col 2: dotted leader (flexible fill)
+  Col 3: value (right-aligned)
+*/
+.telemetryRow {
+  display: grid;
+  grid-template-columns: 130px 1fr auto;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+}
+
+.telKey {
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+/* Dotted leader matching AboutSection */
+.telLeader {
+  display: block;
+  width: 100%;
+  height: 1px;
+  border-bottom: 2px dotted var(--border);
+  opacity: 0.7;
+}
+
+.telVal {
+  text-align: right;
+  white-space: nowrap;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+/* Dynamic color highlight variants */
+.highlight_green  { color: var(--green); text-shadow: 0 0 8px rgba(0, 255, 159, 0.4); }
+.highlight_violet { color: var(--violet); }
+.highlight_amber  { color: var(--amber); }
+.highlight_dim    { color: var(--text-dim); }
+
+/* Meta fourth-wall footnote */
+.metaNote {
+  font-size: 0.65rem;
+  color: var(--text-dimmer);
+  letter-spacing: 0.04em;
+  margin-top: 0.25rem;
+  font-style: italic;
+}
+
+/* Action Buttons */
+.actions {
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.btn {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  border-radius: 4px;
+  border: 1px solid;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  transition: background var(--fast), border-color var(--fast),
+              color var(--fast), box-shadow var(--fast), transform var(--fast);
+}
+
+.btn:hover { transform: translateY(-1px); }
+.btn:active { transform: translateY(0); }
+
+/* Primary CTA — Phosphor green */
+.btnPrimary {
+  background: var(--green-dim);
+  border-color: var(--green);
+  color: var(--green);
+}
+
+.btnPrimary:hover:not(:disabled) {
+  background: rgba(0, 255, 159, 0.25);
+  box-shadow: 0 0 20px rgba(0, 255, 159, 0.2);
+}
+
+.btnExtracting {
+  cursor: default;
+  letter-spacing: 0.02em; /* Tighter tracking prevents progress bar overflow */
+}
+
+.btnPrimary:disabled { transform: none; }
+
+/* Secondary CTA — Ghost terminal button */
+.btnSecondary {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--text-dim);
+}
+
+.btnSecondary:hover {
+  border-color: var(--border-glow);
+  color: var(--text);
+}
+
+/* Footer note */
+.footer {
+  padding: 0.65rem 1.5rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.65rem;
+  color: var(--text-dimmer);
+  text-align: center;
+  letter-spacing: 0.06em;
+}
+
+/* Responsive tweaks for smaller mobile viewports */
+@media (max-width: 480px) {
+  .modal { border-radius: 4px; }
+
+  .telemetryRow {
+    grid-template-columns: 110px 1fr auto;
+    font-size: 0.72rem;
+  }
+
+  .actions { padding: 1rem; }
+  .btn { font-size: 0.72rem; }
+}

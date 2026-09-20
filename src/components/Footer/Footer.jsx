@@ -16,7 +16,7 @@ export default function Footer() {
 
         {/* Copyright + stack attribution */}
         <p className={styles.copy}>
-          © 2026 Pushkar Bankar · Made w/ <Coffee size={10} color="var(--green)" /> · v2.0
+          © 2026 Baka Tech · Made w/ <Coffee size={10} color="var(--green)" /> · v2.1
         </p>
 
         {/* Keyboard shortcut discovery hint */}

@@ -7,8 +7,11 @@ export const personal = {
   github: 'https://github.com/thepushkarB',
   linkedin: 'https://www.linkedin.com/in/pushkar-bankar/',
   twitter: 'https://x.com/thepushkarb',
+  // todo: fetch article from medium
   medium: 'https://medium.com/@pushkarbankar05',
+  // todo: resume download btn
   resume: 'https://drive.google.com/file/d/1N4yCWVM8fREZmYOz1nCBcUKTM1UsUo9C/view',
+  resumeFile: '/Pushkar_resume_neoiii.pdf',
   role: 'Full-Stack Developer',
   summary:
     'Backend-focused Full-Stack Dev building scalable MERN applications & AI-powered systems. Experienced w/ real-time architectures, semantic search, AI agents, MCP & media processing pipelines.',

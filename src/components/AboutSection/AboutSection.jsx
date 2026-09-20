@@ -72,7 +72,7 @@ function useSystemTelemetry() {
     };
 }
 
-export default function AboutSection() {
+export default function AboutSection({ onResumeClick }) {
     // Mr. Robot Easter Egg state: hovering over [CLASSIFIED] reveals clearance text
     const [isClassifiedHovered, setIsClassifiedHovered] = useState(false);
 
@@ -110,6 +110,16 @@ export default function AboutSection() {
                             >
                                 {isClassifiedHovered ? "fsociety clearance required" : "[CLASSIFIED]"}
                             </span>
+
+                            {/* Resume Declassify Trigger */}
+                            <button
+                                className={styles.declassifyBtn}
+                                onClick={onResumeClick}
+                                aria-label="Open resume download"
+                                id="about-resume-btn"
+                            >
+                                [DECLASSIFY_RESUME]
+                            </button>
                         </div>
                         
                         {/* Legacy window control buttons preserved for future reference */}

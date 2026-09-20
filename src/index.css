@@ -208,8 +208,9 @@ ul, ol { list-style: none; }
 
 /* Focus styles for keyboard nav */
 :focus-visible {
-  outline: 2px solid var(--green);
-  outline-offset: 4px;
+  /* outline: 1px solid var(--green); */
+  outline: none;
+  outline-offset: 1px;
   border-radius: 2px;
 }
 

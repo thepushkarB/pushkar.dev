@@ -203,3 +203,52 @@
   .links { display: none; }
   .hamburger { display: flex; }
 }
+
+/* Desktop resume badge button */
+.resumeBtn {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  color: var(--green);
+  background: var(--green-dim);
+  border: 1px solid rgba(0, 255, 159, 0.35);
+  border-radius: 4px;
+  padding: 0.4rem 0.75rem;
+  cursor: pointer;
+  margin-left: 0.5rem;
+  transition: background var(--fast), border-color var(--fast),
+              box-shadow var(--fast), transform var(--fast);
+}
+
+.resumeBtn:hover {
+  background: rgba(0, 255, 159, 0.18);
+  border-color: var(--green);
+  box-shadow: 0 0 14px rgba(0, 255, 159, 0.2);
+  transform: translateY(-1px);
+}
+
+.resumeBtn:active { 
+  transform: translateY(0); 
+}
+
+.resumeBtnBracket { 
+  color: var(--text-dimmer); 
+}
+
+/* Mobile drawer resume button */
+.drawerResumeBtn {
+  width: 100%;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--border-dim);
+  text-align: left;
+  cursor: pointer;
+  color: var(--green);
+}
+
+.drawerResumeBtn:hover {
+  background: var(--green-dim);
+}
