@@ -9,4 +9,8 @@ export default defineConfig({
   // base: '/pushkar.dev',
   // for netlify
   base: '/',
+  // expose Vite to wi-fi network
+  server: {
+    host: true,
+  },
 });

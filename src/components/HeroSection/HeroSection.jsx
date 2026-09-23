@@ -261,7 +261,7 @@ export default function HeroSection() {
       <div className={styles.statusFooter}>
         <div className={`${styles.statusInner} container`}>
           <span className={styles.statusText}>
-            SYS_STATUS: <strong className={styles.online}>ONLINE</strong> · BUILD: v2.0 · UPTIME: 99.9%
+            SYS_STATUS: <strong className={styles.online}>ONLINE</strong> · BUILD: v2.2.0 · UPTIME: 99.9%
           </span>
           <a
             href="#about"

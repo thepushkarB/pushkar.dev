@@ -105,105 +105,6 @@
   box-shadow: 0 0 6px var(--green-glow);
 }
 
-/* Hamburger */
-.hamburger {
-  display: none;
-  flex-direction: column;
-  gap: 5px;
-  padding: 0.5rem;
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
-.hamburger span {
-  display: block;
-  width: 22px;
-  height: 1.5px;
-  background: var(--text-dim);
-  border-radius: 1px;
-  transition: var(--med);
-  transform-origin: center;
-}
-
-.hamburgerOpen span:nth-child(1) {
-  transform: translateY(6.5px) rotate(45deg);
-  background: var(--green);
-}
-.hamburgerOpen span:nth-child(2) {
-  opacity: 0;
-  transform: scaleX(0);
-}
-.hamburgerOpen span:nth-child(3) {
-  transform: translateY(-6.5px) rotate(-45deg);
-  background: var(--green);
-}
-
-/* Mobile drawer */
-.drawer {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: min(280px, 85vw);
-  height: 100dvh;
-  background: var(--surface);
-  border-left: 1px solid var(--border);
-  z-index: 999;
-  transform: translateX(100%);
-  transition: transform var(--med);
-  padding: 5rem 2rem 2rem;
-  display: flex;
-  flex-direction: column;
-}
-
-.drawerOpen { transform: translateX(0); }
-
-.drawerLinks {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.drawerLink {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-family: var(--font-mono);
-  font-size: 0.9rem;
-  color: var(--text-dim);
-  padding: 0.75rem 0.5rem;
-  border-bottom: 1px solid var(--border-dim);
-  transition: var(--fast);
-  letter-spacing: 0.05em;
-}
-
-.drawerLink:hover {
-  color: var(--green);
-}
-
-.drawerPrompt {
-  color: var(--green);
-  font-weight: 700;
-  opacity: 0.6;
-}
-
-.drawerLink:hover .drawerPrompt { opacity: 1; }
-
-/* Backdrop */
-.backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.7);
-  z-index: 998;
-  backdrop-filter: blur(2px);
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .links { display: none; }
-  .hamburger { display: flex; }
-}
-
 /* Desktop resume badge button */
 .resumeBtn {
   display: flex;
@@ -238,17 +139,212 @@
   color: var(--text-dimmer); 
 }
 
-/* Mobile drawer resume button */
-.drawerResumeBtn {
-  width: 100%;
-  background: none;
-  border: none;
-  border-bottom: 1px solid var(--border-dim);
-  text-align: left;
-  cursor: pointer;
-  color: var(--green);
+
+
+
+
+/* FLOATING MOBILE DOCK & SLIDING PILL */
+
+/* 1. Desktop: Never display the mobile dock on screens > 768px */
+@media (min-width: 769px) {
+  .dock {
+    display: none !important;
+  }
 }
 
-.drawerResumeBtn:hover {
-  background: var(--green-dim);
+/* 2. Mobile Layout & Dock Styles */
+@media (max-width: 768px) {
+  .links {
+    display: none;
+  }
+
+  .dock {
+    position: fixed;
+    /* Safe for iPhone Home Indicator & Android Navigation Bar */
+    bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform var(--med), opacity var(--med);
+    pointer-events: auto;
+  }
+
+  /* Slips off-screen when typing in contact form */
+  .dockHidden {
+    transform: translate(-50%, calc(100% + 2.5rem));
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* ── Dynamic Sliding Micro-HUD Pill ── */
+  .dockHud {
+    position: absolute;
+    top: -2.3rem;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.2rem 0.6rem;
+    background: #0a0a0a;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 255, 159, 0.1);
+    opacity: 0;
+    pointer-events: none;
+    /* Smooth mechanical glide across icons */
+    will-change: left;
+    transition: left 320ms cubic-bezier(0.2, 1, 0.4, 1), opacity 320ms ease;
+    /* slightly lowered when hidden */
+    transform: translate(-50%, 6px);
+    z-index: 1001;
+  }
+
+  .dockHudVisible {
+    opacity: 1;
+    /* floats up into place smoothly */
+    transform: translate(-50%, 0);
+  }
+
+  .dockHudPrompt {
+    color: var(--green);
+    font-weight: 700;
+  }
+
+  .dockHudIndex {
+    color: var(--text-dim);
+  }
+
+  .dockHudLabel {
+    color: #ffffff;
+    font-weight: 600;
+  }
+
+  /* Downward Caret (▼) pointing directly to active icon */
+  .dockHudCaret {
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid var(--border);
+  }
+
+  .dockHudCaret::after {
+    content: '';
+    position: absolute;
+    bottom: 1px;
+    left: -4px;
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 4px solid #0a0a0a;
+  }
+
+  /* ── Dock Island Container ── */
+  .dockContainer {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    background: rgba(17, 17, 17, 0);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 0.35rem 0.5rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 1px rgba(0, 255, 159, 0.2);
+  }
+
+  /* Individual icon slots */
+  .dockItem {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    color: var(--text-dim);
+    border-radius: 8px;
+    transition: color var(--fast), background var(--fast), transform 0.1s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .dockItem:active {
+    transform: scale(0.88); /* Physical button click feel */
+  }
+
+  /* Active icon state */
+  .dockItemActive {
+    color: var(--green);
+    background: var(--green-dim);
+  }
+
+  /* Glowing green pip under active icon */
+  .dockPip {
+    position: absolute;
+    bottom: 3px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 6px var(--green-glow);
+    animation: pipPop 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+   @keyframes pipPop {
+    0%   { transform: scale(0) translateY(4px); opacity: 0; }
+    30%  { transform: scale(1.2) translateY(-1px); }
+    100% { transform: scale(1) translateY(0); opacity: 1; }
+  }
+
+  /* Terminal separator */
+  .dockDivider {
+    width: 1px;
+    height: 20px;
+    background: var(--border);
+    margin: 0 0.15rem;
+  }
+
+  /* Resume trigger button in dock */
+  .dockResumeBtn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    background: none;
+    border: none;
+    color: var(--green);
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background var(--fast), transform 0.1s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .dockResumeBtn:active {
+    transform: scale(0.88);
+  }
+
+  /* Tiny [CV] badge attached to resume icon */
+  .dockResumeBadge {
+    position: absolute;
+    top: 4px;
+    right: 3px;
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    font-weight: 700;
+    color: var(--green);
+    line-height: 1;
+  }
 }
