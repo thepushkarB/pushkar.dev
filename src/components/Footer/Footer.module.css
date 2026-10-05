@@ -12,6 +12,15 @@
   color: var(--text-dimmer);
 }
 
+/* Extra clearance on mobile so floating dock doesn't obscure footer text */
+@media (max-width: 768px) {
+  .footer {
+    /* 5.5rem = dock container height + extra space */
+    /* env(safe-area-inset-bottom, 0px) = prevents UI from intefering w/ bottom gesture bar/nav-bar on mobiles & place UI in Safe to view content */
+    padding-bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px));
+  }
+}
+
 /* Git humor line */
 .quip {
   color: var(--text-dim);

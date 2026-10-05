@@ -1,5 +1,5 @@
 import styles from './Navbar.module.css';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { personal } from '../../data/content';
 import { User, Briefcase, Code2, Terminal, Mail, FileText } from 'lucide-react';
 
@@ -15,33 +15,6 @@ export default function Navbar({ onResumeClick }) {
     const [active, setActive] = useState('');
     const [scrolled, setScrolled] = useState(false);
 
-    const dockRef = useRef(null);
-    const [pillOffset, setPillOffset] = useState(null);
-
-    // find active section
-    const activeSection = NAV_LINKS.find(l => l.href.slice(1) === active);
-
-    // update pill position wheever 'active' changes
-    useEffect(() => {
-        if (!active || !dockRef.current) {
-            setPillOffset(null);
-            return;
-        }
-
-        // find the active anchor tag inside the dock
-        const activeEl = dockRef.current.querySelector(`[data-section="${active}"]`);
-
-        if(activeEl) {
-            // Absolute geometric center: (Icon Center X) - (Dock Left X)
-            const dockRect = dockRef.current.getBoundingClientRect();
-            const activeRect = activeEl.getBoundingClientRect();
-            // center of active icon realtive to dock
-            const offset = (activeRect.left - dockRect.left) + (activeRect.width / 2);
-            setPillOffset(offset);
-        }
-
-
-    }, [active]);
 
     
     const [keyboardOpen, setKeyboardOpen] = useState(false);
@@ -193,22 +166,7 @@ export default function Navbar({ onResumeClick }) {
             <nav
                 className={`${styles.dock} ${keyboardOpen ? styles.dockHidden : ''}`} 
                 aria-label="Mobile quick navigation"
-                ref={dockRef}
             >
-                {/* Dynamic Sliding Micro-HUD Pill */}
-                <div
-                    className={`${styles.dockHud} ${activeSection && pillOffset !== null ? styles.dockHudVisible : ''}`}
-                    style={{ left: `${pillOffset || 0}px` }}
-                    aria-hidden="true"
-                >
-                    <span className={styles.dockHudPrompt}>&gt;</span>
-                    <span className={styles.dockHudIndex}>{activeSection ? `${activeSection.index}.` : ''}</span>
-                    <span className={styles.dockHudLabel}>{activeSection ? activeSection.label.toUpperCase() : ''}</span>
-
-                    {/* Downward pointing caret */}
-                    <span className={styles.dockHudCaret} />
-                </div>
-
                 <div className={styles.dockContainer}>
                     {NAV_LINKS.map((link) => {
                         const Icon = link.icon;
