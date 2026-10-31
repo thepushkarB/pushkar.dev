@@ -90,9 +90,9 @@
   box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5), 0 0 25px rgba(0, 255, 159, 0.06);
 }
 
-/* Halftone Dot Matrix Card Header Zone (130px tall) */
+/* Halftone Dot Matrix Card Header Zone (Taller, toward square proportions) */
 .cardHeaderZone {
-  height: 130px;
+  height: 210px;
   position: relative;
   border-bottom: 1px solid var(--border);
   overflow: hidden;
@@ -138,6 +138,7 @@
   background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.1), transparent);
   transition: top 0.6s var(--ease);
   pointer-events: none;
+  z-index: 1;
 }
 
 .projectCard:hover .cardHeaderZone::after {
@@ -146,6 +147,8 @@
 
 /* Header Meta & Badges */
 .typeBadge {
+  position: relative;
+  z-index: 2;
   font-family: var(--font-mono);
   font-size: 0.65rem;
   padding: 0.2rem 0.5rem;
@@ -159,6 +162,8 @@
 }
 
 .externalLinkBtn {
+  position: relative;
+  z-index: 2;
   width: 32px;
   height: 32px;
   border-radius: 4px;
@@ -181,6 +186,8 @@
 }
 
 .internalBadge {
+  position: relative;
+  z-index: 2;
   font-family: var(--font-mono);
   font-size: 0.65rem;
   padding: 0.2rem 0.5rem;
@@ -367,6 +374,6 @@
   }
 
   .cardHeaderZone {
-    height: 100px;
+    height: 180px;
   }
 }

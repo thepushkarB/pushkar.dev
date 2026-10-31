@@ -20,6 +20,7 @@
 
 import { useState } from "react";
 import { projects } from "../../data/content";
+import ProjectBitmap from "./bitmaps/ProjectBitmap";
 import styles from "./ProjectsSection.module.css";
 
 // Dynamic map connecting project accent token to the halftone dot matrix CSS class
@@ -33,6 +34,8 @@ const ACCENT_MAP = {
 export default function ProjectsSection() {
   // Collapsible toggle state for older archive builds
   const [showArchive, setShowArchive] = useState(false);
+  // Hover state for desktop interactive bitmap animations
+  const [hoveredProjectId, setHoveredProjectId] = useState(null);
 
   return (
     /* Outer section container with id="projects" for smooth scroll navigation */
@@ -60,10 +63,22 @@ export default function ProjectsSection() {
             const halftoneClass = ACCENT_MAP[proj.accent] || styles.halftoneGreen;
 
             return (
-              <article key={proj.id} className={styles.projectCard}>
+              <article
+                key={proj.id}
+                className={styles.projectCard}
+                onMouseEnter={() => setHoveredProjectId(proj.id)}
+                onMouseLeave={() => setHoveredProjectId(null)}
+              >
                 
                 {/* Pure Halftone Dot-Matrix Header Zone with CRT Scan-Sweep */}
                 <div className={`${styles.cardHeaderZone} ${halftoneClass}`}>
+                  {/* Procedural Bitmap Canvas (Overwatcher Sentinel Eye, etc.) */}
+                  <ProjectBitmap
+                    projectId={proj.id}
+                    accent={proj.accent}
+                    isHovered={hoveredProjectId === proj.id}
+                  />
+
                   <span className={styles.typeBadge}>{proj.type}</span>
                   {proj.link && (
                     <a
@@ -126,10 +141,22 @@ export default function ProjectsSection() {
             const halftoneClass = ACCENT_MAP[proj.accent] || styles.halftoneViolet;
 
             return (
-              <article key={proj.id} className={styles.projectCard}>
+              <article
+                key={proj.id}
+                className={styles.projectCard}
+                onMouseEnter={() => setHoveredProjectId(proj.id)}
+                onMouseLeave={() => setHoveredProjectId(null)}
+              >
                 
                 {/* Pure Halftone Dot-Matrix Header Zone */}
                 <div className={`${styles.cardHeaderZone} ${halftoneClass}`}>
+                  {/* Procedural Bitmap Canvas */}
+                  <ProjectBitmap
+                    projectId={proj.id}
+                    accent={proj.accent}
+                    isHovered={hoveredProjectId === proj.id}
+                  />
+
                   <span className={styles.typeBadge}>{proj.type}</span>
                   <span className={styles.internalBadge}>[INTERNAL / WORK]</span>
                 </div>
