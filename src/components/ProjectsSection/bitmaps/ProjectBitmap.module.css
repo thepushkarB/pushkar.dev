@@ -7,7 +7,23 @@
   pointer-events: none; /* Allows clicks to pass through to badges and links */
   overflow: hidden;
   z-index: 0;
-  background-color: #0a0712; /* Matches the deep void background of halftoneViolet */
+}
+
+/* Solid void backgrounds matching portfolio accent tokens — eliminates all background dot noise */
+.bgViolet {
+  background-color: #0a0712;
+}
+
+.bgGreen {
+  background-color: #020f07;
+}
+
+.bgAmber {
+  background-color: #0f0d02;
+}
+
+.bgCyan {
+  background-color: #020d0f;
 }
 
 .canvas {

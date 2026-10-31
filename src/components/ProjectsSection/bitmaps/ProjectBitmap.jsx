@@ -8,15 +8,17 @@
 */
 
 import OverwatcherEye from "./OverwatcherEye";
+import TicketTamerCanvas from "./TicketTamerCanvas";
 
 export default function ProjectBitmap({ projectId, accent, isHovered }) {
   switch (projectId) {
     case "overwatcher":
       return <OverwatcherEye isHovered={isHovered} />;
 
-    // Upcoming project cards will plug in here:
-    // case "ticket-tamer":
-    //   return <TicketTamerCanvas isHovered={isHovered} />;
+    case "ticket-tamer":
+      return <TicketTamerCanvas isHovered={isHovered} />;
+
+    // Upcoming project cards:
     // case "collaborator":
     //   return <CollaboratorCanvas isHovered={isHovered} />;
     // case "rayib":

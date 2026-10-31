@@ -156,16 +156,19 @@ export default function OverwatcherEye({ isHovered }) {
           continue;
         }
 
-        // 2. PUPIL VOID: Distinct dark hollow center
+        // 2. PUPIL VOID: Distinct dark hollow center (masks underlying CSS dots)
         if (isInsideEyelid && distPupil < 15) {
-          continue; // Leaves deep void
+          ctx.fillStyle = "#0a0712";
+          ctx.beginPath();
+          ctx.arc(x, y, 3.5, 0, Math.PI * 2);
+          ctx.fill();
+          continue;
         }
 
         // 3. IRIS RING: High-density violet dot texture
         if (isInsideEyelid && distPupil <= 38) {
           ctx.fillStyle = COLOR_VIOLET;
           ctx.beginPath();
-          // Slightly dilate on hover, denser near the pupil rim
           const irisDotRadius = isHovered ? 2.3 : 1.9;
           ctx.arc(x, y, irisDotRadius, 0, Math.PI * 2);
           ctx.fill();
@@ -199,11 +202,8 @@ export default function OverwatcherEye({ isHovered }) {
           continue;
         }
 
-        // 7. AMBIENT BACKGROUND: Velvety faint dot matrix matching portfolio
-        ctx.fillStyle = COLOR_VIOLET_DIM;
-        ctx.beginPath();
-        ctx.arc(x, y, 0.85, 0, Math.PI * 2);
-        ctx.fill();
+        // Outside the eye and ripple: DO NOT draw ambient dots!
+        // Leaving this transparent lets the authentic, deep CSS .halftoneViolet background show through cleanly.
       }
     }
   };
@@ -260,7 +260,7 @@ export default function OverwatcherEye({ isHovered }) {
   }, []);
 
   return (
-    <div ref={containerRef} className={styles.canvasContainer} aria-hidden="true">
+    <div ref={containerRef} className={`${styles.canvasContainer} ${styles.bgViolet}`} aria-hidden="true">
       <canvas ref={canvasRef} className={styles.canvas} />
     </div>
   );
