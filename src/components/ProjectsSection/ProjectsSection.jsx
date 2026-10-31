@@ -21,6 +21,7 @@
 import { useState } from "react";
 import { projects } from "../../data/content";
 import ProjectBitmap from "./bitmaps/ProjectBitmap";
+import TechStackTags from "./TechStackTags";
 import styles from "./ProjectsSection.module.css";
 
 // Dynamic map connecting project accent token to the halftone dot matrix CSS class
@@ -115,14 +116,9 @@ export default function ProjectsSection() {
                     </ul>
                   )}
 
-                  {/* Tech Stack Chips */}
-                  <div className={styles.tagsRow} aria-label="Technologies used">
-                    {proj.tags.map((tag) => (
-                      <span key={tag} className={styles.tagChip}>
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
+                  {/* Tech Stack Chips with on-demand progressive disclosure */}
+                  <TechStackTags tags={proj.tags} limit={3} />
+
                 </div>
 
               </article>
@@ -169,14 +165,9 @@ export default function ProjectsSection() {
 
                   <p className={styles.description}>{proj.description}</p>
 
-                  {/* Tech Stack Chips */}
-                  <div className={styles.tagsRow} aria-label="Technologies used">
-                    {proj.tags.map((tag) => (
-                      <span key={tag} className={styles.tagChip}>
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
+                  {/* Tech Stack Chips with on-demand progressive disclosure */}
+                  <TechStackTags tags={proj.tags} limit={3} />
+
                 </div>
 
               </article>
@@ -223,13 +214,8 @@ export default function ProjectsSection() {
 
                 <p className={styles.archiveDesc}>{proj.description}</p>
 
-                <div className={styles.tagsRow}>
-                  {proj.tags.map((tag) => (
-                    <span key={tag} className={styles.tagChip}>
-                      {tag}
-                    </span>
-                  ))}
-                </div>
+                {/* Tech Stack Chips */}
+                <TechStackTags tags={proj.tags} limit={3} />
               </article>
             ))}
           </div>

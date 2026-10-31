@@ -1,0 +1,108 @@
+/* Container for tags row and collapsible drawer */
+.tagsContainer {
+  margin-top: auto;
+  padding-top: 0.85rem;
+  border-top: 1px dashed var(--border);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Base horizontal row for hero tags */
+.tagsRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+/* Primary Hero Tag Chip */
+.tagChip {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  padding: 0.2rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: var(--surface-2);
+  color: var(--text-dim);
+  letter-spacing: 0.04em;
+  transition: border-color var(--fast), color var(--fast);
+}
+
+.tagChip:hover {
+  border-color: var(--green);
+  color: var(--green);
+}
+
+/* Tactical Monospace Expand/Collapse Pill */
+.toggleBtn {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  padding: 0.2rem 0.5rem;
+  border: 1px dashed var(--border);
+  border-radius: 3px;
+  background: rgba(0, 255, 159, 0.03);
+  color: var(--green);
+  cursor: pointer;
+  letter-spacing: 0.06em;
+  display: inline-flex;
+  align-items: center;
+  transition: background var(--fast), border-color var(--fast), box-shadow var(--fast);
+}
+
+.toggleBtn:hover {
+  border-color: var(--green);
+  background: rgba(0, 255, 159, 0.1);
+  box-shadow: 0 0 10px rgba(0, 255, 159, 0.15);
+}
+
+.toggleBtn:focus-visible {
+  outline: 1px solid var(--green);
+  outline-offset: 2px;
+}
+
+/* Hardware-Accelerated Smooth Height Drawer using CSS Grid */
+.drawer {
+  display: grid;
+  grid-template-rows: 0fr;
+  overflow: hidden;
+  visibility: hidden;
+  opacity: 0;
+  transition: grid-template-rows 0.22s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.2s ease,
+              visibility 0.22s;
+}
+
+.drawerOpen {
+  grid-template-rows: 1fr;
+  visibility: visible;
+  opacity: 1;
+}
+
+.drawerInner {
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  padding-top: 0.45rem;
+  padding-bottom: 0.1rem;
+}
+
+/* Secondary Expanded Tag Chip */
+.subtleChip {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  padding: 0.18rem 0.45rem;
+  border: 1px solid var(--border-dim);
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--text-dimmer);
+  letter-spacing: 0.03em;
+  transition: color var(--fast), border-color var(--fast);
+}
+
+.subtleChip:hover {
+  color: var(--text);
+  border-color: var(--border);
+}
